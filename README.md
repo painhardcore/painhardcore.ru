@@ -1,3 +1,0 @@
-# painhardcore.ru
-
-*test message*
