@@ -3,18 +3,52 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - pages  # or the branch you are using as the source
+      - master
+  workflow_dispatch:
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./  # directory where your HTML files are located
+    - name: Install dependencies
+      run: sudo apt-get install -y jq
+
+    - name: Get latest Gobrou release
+      id: get_release
+      run: |
+        api_url="https://api.github.com/repos/painhardcore/Gobrou/releases/latest"
+        download_url=$(curl -s $api_url | jq -r '.assets[] | select(.name == "gobrou") | .browser_download_url')
+        echo "download_url=$download_url" >> $GITHUB_ENV
+
+    - name: Download Gobrou tool
+      run: |
+        curl -L ${{ env.download_url }} -o gobrou
+        chmod +x gobrou
+
+    - name: Convert Markdown to HTML
+      run: |
+        ./gobrou
+      
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: ./dist  # Directory containing your HTML files
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        
