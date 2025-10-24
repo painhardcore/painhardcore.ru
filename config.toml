@@ -1,8 +1,8 @@
 website = "https://painhardcore.ru"
-author =  "Andrey Yurchenkov"
+author =  "Andrei Iurchenkov"
 title = "Painhardcore"
 description = """\
-<p>I'm Andrey Yurchenkov, a Russian-born software engineer living in France. I specialize in backend development of very high loaded distributed systems, especially with Golang. On this blog, I'll share my thoughts and experiences in the tech world and about my life in general.</p>
+<p>I'm Andrei Iurchenkov, a Russian-born software engineer living in France. I specialize in backend development of very high loaded distributed systems, especially with Golang. On this blog, I'll share my thoughts and experiences in the tech world and about my life in general.</p>
 <p>In my free time, I run a <a href="https://t.me/code500" >
 meme channel on Telegram</a></p>
 <p>All job related opportunities please send to job@yurchenkov.ru</p>
